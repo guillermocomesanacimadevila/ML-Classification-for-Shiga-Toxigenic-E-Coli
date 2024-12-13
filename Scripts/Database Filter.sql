@@ -20,3 +20,17 @@ FROM metadata
 WHERE Stx = "stx2a"
 GROUP BY Region
 ORDER BY Region;
+
+SELECT COUNT(*)
+FROM metadata
+WHERE Stx = "-";
+
+SELECT COUNT(*)
+FROM metadata
+WHERE Stx = '-' 
+   OR PT = '-' 
+   OR Region = '-' 
+   OR Country = '-' 
+   OR Year = '-';
+
+-- Certifying that missing entries == only "Stx" -- 
