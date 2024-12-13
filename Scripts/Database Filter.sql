@@ -34,3 +34,9 @@ WHERE Stx = '-'
    OR Year = '-';
 
 -- Certifying that missing entries == only "Stx" -- 
+
+DELETE FROM metadata
+WHERE Stx = '-' AND id IS NOT NULL;
+
+SELECT * FROM 
+metadata;
