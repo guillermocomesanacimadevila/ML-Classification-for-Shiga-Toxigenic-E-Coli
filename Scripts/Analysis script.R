@@ -1,3 +1,5 @@
+###### UPDATE DIRECTORY
+
 install.packages("ggplot2")
 install.packages("tidyverse")
 install.packages("readr")
@@ -21,9 +23,14 @@ ggplot(metadata, aes(x = PT, y = Stx, colour = Region)) +
 # Plot the number of samples per geographical region
 # Add the count column 
 
-plot <- ggplot(metadata, aes(x=PT, y=Stx, fill=Region)) + 
-  geom_bar(stat="identity", position=position_dodge()) +
-  geom_errorbar(aes(ymin=len-sd, ymax=len+sd), width=.2,
-                position=position_dodge(.9))
+# Bar charts for total number per region
+# Table gathered = eliminated "-" - Stx
 
-plot + scale_fill_brewer(palette="Paired") + theme_minimal()
+counter_table <- read.csv("/Users/guillermocomesanacimadevila/Desktop/(MSc) BIOINFORMATICS/APPLIED DATA SCIENCE IN BIOLOGY/Coursework/Applied Data Science CW 1 (Script)/FINAL TABLE (COUNTERS).csv", header = TRUE)
+bar_chart <- ggplot(counter_table, aes(x=Region, y=Counter, fill=Region)) + 
+  geom_bar(stat="identity", position=position_dodge()) +
+  scale_fill_brewer(palette="Paired") +
+  theme_minimal() +
+  labs(title="Regional Counters", x="Region", y="Counter")
+
+print(bar_chart)
