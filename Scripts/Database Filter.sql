@@ -1,5 +1,6 @@
 -- SELECT * FROM 
 -- metadata;
+-- Analysis conducted in MySQL
 
 SELECT COUNT(*)
 FROM metadata
