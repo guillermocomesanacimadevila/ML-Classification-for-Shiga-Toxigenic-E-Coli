@@ -1,12 +1,23 @@
--- SELECT * FROM 
--- metadata;
--- Analysis conducted in a MySQL Workbench server
+-- SELECT * 
+-- FROM metadata;
 
+-- Count number of rows 
 SELECT COUNT(*)
 FROM metadata
 WHERE Region = "UK";
 
-SELECT DISTINCT Region
+SELECT COUNT(*) 
+FROM metadata
+WHERE Stx = "-";
+
+SELECT COUNT(*) 
+FROM metadata
+WHERE PT = 'untypable';
+
+SELECT COUNT(*) FROM metadata
+WHERE Stx = "-" AND PT = "untypable";
+
+SELECT DISTINCT Region 
 FROM metadata; 
 
 SELECT Region, COUNT(*) AS Region_Count
@@ -57,7 +68,7 @@ DELIMITER $$;
     
 INSERT INTO metadata_region_2 (Region, Counter)
 VALUES 
-    ("UK", 2174),
+	("UK", 2174),
     ("Australasia", 6),
     ("C. America", 29),
     ("C.Europe", 62),
@@ -115,7 +126,7 @@ DELIMITER $$;
 
 INSERT INTO filtered_values_2 (Region, Counter)
 VALUES 
-    ("UK", 2121),
+	("UK", 2121),
     ("Australasia", 6),
     ("C. America", 29),
     ("C.Europe", 58),
@@ -129,3 +140,16 @@ VALUES
     ("Asia", 55);
     
 SELECT * FROM filtered_values_2;
+
+-- SELECT * FROM metadata2; 
+SELECT COUNT(*) FROM metadata2; -- Proof of reduced count due to removed Stx = NULL
+
+-- Count Stx frequency 
+-- SELECT DISTINCT Stx 
+-- FROM metadata2;
+
+SELECT COUNT(*)
+FROM metadata2;
+WHERE Stx = "NA";
+
+-- Re make the counter table again -- with the updated one --
