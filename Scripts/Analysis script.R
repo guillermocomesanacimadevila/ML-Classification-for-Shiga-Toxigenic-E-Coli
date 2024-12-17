@@ -1,7 +1,6 @@
 ###### UPDATE DIRECTORY
 
-install.packages("ggplot2")
-install.packages("readr")
+install.packages("ggplot2", "readr", "dplyr")
 
 library(ggplot2)
 library(readr)
