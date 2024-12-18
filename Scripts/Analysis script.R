@@ -46,28 +46,41 @@ print(dim(csv_cleaned))
 
 # Heatmap PT and Stx gene frequency
 # First examine dimensions
- total_unique_stx <- length(unique(na.omit(csv_table$Stx)))
+total_unique_stx <- length(unique(na.omit(csv_table$Stx)))
 total_unique_pt <- length(unique(na.omit(csv_table$PT)))
 cat(total_unique_pt)
 cat(total_unique_stx) # 13x33 matrix then
 
-heatmap_data <- csv_cleaned %>%
+heatmap_data <- csv_cleaned1 %>%
   group_by(Stx, PT) %>%
-  summarise(Freq = n()) %>%
-  ungroup()
+  summarise(Freq = n(), .groups = "drop")
 
+# Create the heatmap plot
 heatmap_plot <- ggplot(heatmap_data, aes(x = PT, y = Stx, fill = Freq)) +
-  geom_tile(color = "white") + 
-  scale_fill_gradient(low = "white", high = "steelblue") + 
-  theme_minimal() + 
-  labs(x = "Phage Type", y = "Shiga Toxin", title = "Heatmap with Values") + 
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+  geom_tile(color = "grey90") + 
+  scale_fill_gradient(
+    low = "#D4EBF2", high = "#08306B", 
+    name = "Frequency" 
+  ) +
+  geom_text(aes(label = Freq), color = "black", size = 3, fontface = "bold") + 
+  labs(
+    x = "Phage Type (PT)", 
+    y = "Shiga Toxin (Stx)", 
+    title = "Frequency Heatmap of PT vs Stx",
+    caption = "Data Source: Cleaned Table | Visualization by G" 
+  ) +
+  theme_minimal(base_size = 14) + 
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold", size = 16), 
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 10), 
+    axis.text.y = element_text(size = 10), 
+    legend.position = "right", 
+    legend.title = element_text(size = 12, face = "bold"), 
+    legend.text = element_text(size = 10) 
+  )
 
-heatmap_plot_with_values <- heatmap_plot +
-  geom_text(aes(label = Freq), color = "black", size = 3)
-
-print(heatmap_plot_with_values)
-print(dim(heatmap_data)) 
+print(heatmap_plot)
+print(dim(heatmap_data))
 
 # Second heatmap
 csv_table1 <- read.csv("/Users/guillermocomesanacimadevila/Desktop/DS in Bio/tableA.csv", header = TRUE)
