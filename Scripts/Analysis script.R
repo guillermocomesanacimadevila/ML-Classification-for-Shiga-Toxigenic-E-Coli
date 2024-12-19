@@ -3,10 +3,14 @@
 install.packages("ggplot2")
 install.packages("readr")
 install.packages("dyplr")
+install.packages("pheatmap")
+install.packages("tidyr")
 
 library(ggplot2)
+library(pheatmap)
 library(readr)
 library(dplyr)
+library(tidyr)
 
 # Set working directory
 setwd("/Users/guillermocomesanacimadevila/Desktop/(MSc) BIOINFORMATICS/APPLIED DATA SCIENCE IN BIOLOGY/Coursework")
@@ -84,7 +88,6 @@ heatmap_plot <- ggplot(heatmap_data, aes(x = PT, y = Stx, fill = Freq)) +
 print(heatmap_plot)
 print(dim(heatmap_data))
 
-# Second heatmap
 csv_table1 <- read.csv("/Users/guillermocomesanacimadevila/Desktop/DS in Bio/tableA.csv", header = TRUE)
 csv_cleaned1 <- csv_table1 %>%
   filter(Stx != "-", PT != "untypable", PT != "#N/A")
@@ -133,11 +136,44 @@ metadata_counters$Region <- factor(metadata_counters$Region, levels = metadata_c
 
 ggplot(data=metadata_counters, aes(x=Region, y=Counter)) +
   geom_bar(stat="identity", position=position_dodge(), fill="steelblue") +
-  geom_text(aes(label=Counter), vjust=-0.3, color="black", size=3.5) +
+  geom_text(aes(label=Counter), vjust=-0.3, color="black", size=2.5) +
   theme_minimal() +
   labs(
-    title = "Number of laboratory-acquired infections, 1970-2021",
+    title = "Sample size distribution per region",
     x = "Region",
-    y = "Number of Infections"
+    y = "Sample size"
   ) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) å
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+# coord_flip() - maybe?
+
+# ======= Second heatmap design ======= #
+heatmap_2_data <- correct_filtered_table %>%
+  group_by(Stx, PT) %>%
+  summarise(Count = n(), .groups = "drop") %>%
+  arrange(desc(Count))  
+
+pt_priority <- heatmap_2_data %>%
+  group_by(PT) %>%
+  summarise(Total_Count = sum(Count), .groups = "drop") %>%
+  arrange(desc(Total_Count))
+
+heatmap_matrix <- heatmap_2_data %>%
+  pivot_wider(names_from = PT, values_from = Count, values_fill = list(Count = 0)) %>%
+  column_to_rownames(var = "Stx")
+
+heatmap_matrix <- heatmap_matrix[, pt_priority$PT]
+
+# print(head(heatmap_2_data))
+# print(heatmap_matrix)
+
+pheatmap(
+  heatmap_matrix,
+  color = colorRampPalette(c("red", "white", "blue")) (50),
+  cluster_rows = TRUE,
+  cluster_cols = TRUE,
+  fontsize = 12,
+  fontsize_row = 10,
+  fontsize_col = 10,
+  main = "Clustered Heatmap of Stx and PT",
+  display_numbers = TRUE
+)
