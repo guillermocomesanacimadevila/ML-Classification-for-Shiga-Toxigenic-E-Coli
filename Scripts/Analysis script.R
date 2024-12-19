@@ -1,13 +1,14 @@
-###### UPDATE DIRECTORY
+# ======== Install packages and call libraries ======== #
 
 install.packages("ggplot2")
 install.packages("readr")
+install.packages("dyplr")
 
 library(ggplot2)
 library(readr)
 library(dplyr)
 
-
+# Set working directory
 setwd("/Users/guillermocomesanacimadevila/Desktop/(MSc) BIOINFORMATICS/APPLIED DATA SCIENCE IN BIOLOGY/Coursework")
 csv_table <- read_csv("/Users/guillermocomesanacimadevila/Desktop/XX50235metadata")
 write_csv(csv_table, "/Users/guillermocomesanacimadevila/Desktop/cleaned_table.csv")
@@ -51,7 +52,8 @@ total_unique_pt <- length(unique(na.omit(csv_table$PT)))
 cat(total_unique_pt)
 cat(total_unique_stx) # 13x33 matrix then
 
-heatmap_data <- csv_cleaned1 %>%
+correct_filtered_table <- read.csv("/Users/guillermocomesanacimadevila/Desktop/(MSc) BIOINFORMATICS/APPLIED DATA SCIENCE IN BIOLOGY/Coursework/Applied Data Science CW 1 (Script)/Scripts/Final analysis/Filtered_metadata.csv", header = TRUE)
+heatmap_data <- correct_filtered_table %>%
   group_by(Stx, PT) %>%
   summarise(Freq = n(), .groups = "drop")
 
@@ -119,3 +121,23 @@ stx_table <- data.frame(
   Stx = c("Stx1a", "Stx2a", "Stx2c", "Stx2d", "Stx1c"),
   Values = c(918, 1357, 2070, 1, 1)
 )
+
+# Discrepancy of PT 21/28 (not consistent with the format for the class)
+# Plotting line graph over time to have a look at possible outbreaks
+# Looking at the outbreaks of the virulent Stx form (Stx2x)
+# Specify species in figure legend
+
+# Create new counter table # metadata_counters.csv
+metadata_counters <- read.csv("/Users/guillermocomesanacimadevila/Desktop/(MSc) BIOINFORMATICS/APPLIED DATA SCIENCE IN BIOLOGY/Coursework/Applied Data Science CW 1 (Script)/Scripts/Final analysis/metadata_counters.csv", header = TRUE)
+metadata_counters$Region <- factor(metadata_counters$Region, levels = metadata_counters$Region[order(-metadata_counters$Counter)])
+
+ggplot(data=metadata_counters, aes(x=Region, y=Counter)) +
+  geom_bar(stat="identity", position=position_dodge(), fill="steelblue") +
+  geom_text(aes(label=Counter), vjust=-0.3, color="black", size=3.5) +
+  theme_minimal() +
+  labs(
+    title = "Number of laboratory-acquired infections, 1970-2021",
+    x = "Region",
+    y = "Number of Infections"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) å
