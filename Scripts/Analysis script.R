@@ -168,12 +168,12 @@ heatmap_matrix <- heatmap_matrix[, pt_priority$PT]
 
 pheatmap(
   heatmap_matrix,
-  color = colorRampPalette(c("red", "white", "blue")) (50),
+  color = colorRampPalette(c("steelblue", "white", "tomato1")) (50),
   cluster_rows = TRUE,
   cluster_cols = TRUE,
   fontsize = 12,
   fontsize_row = 10,
   fontsize_col = 10,
   main = "Clustered Heatmap of Stx and PT",
-  display_numbers = TRUE
+  display_numbers = FALSE
 )
