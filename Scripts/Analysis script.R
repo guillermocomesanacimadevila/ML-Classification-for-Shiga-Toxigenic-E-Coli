@@ -177,3 +177,28 @@ pheatmap(
   main = "Clustered Heatmap of Stx and PT",
   display_numbers = FALSE
 )
+
+# ====== Temporal trend figure ====== #
+uk_samples <- read.csv("/Users/guillermocomesanacimadevila/Desktop/(MSc) BIOINFORMATICS/APPLIED DATA SCIENCE IN BIOLOGY/Coursework/Applied Data Science CW 1 (Script)/Scripts/Final analysis/uk_sorted_samples.csv", header = TRUE)
+print(head(uk_samples))
+
+uk_data$Year <- as.numeric(as.character(uk_data$Year))
+uk_data <- uk_samples %>%
+  group_by(Year) %>%
+  summarise(Freq = n(), .groups = "drop")
+
+ggplot(data = uk_data, aes(x = Year, y = Freq)) +
+  geom_bar(stat = "identity", position = position_dodge(), fill = "steelblue", color = "black") +
+  geom_point(color = "black", size = 3, shape = 15) +
+  geom_smooth(method = "loess", se = FALSE, color = "orange", size = 1.2, linetype = "dashed") +
+  geom_text(aes(label = ""), vjust = -0.3, color = "black", size = 2.5) +
+  theme_minimal() +
+  labs(
+    title = "Temporal Trend of Sample Size", 
+    x = "Year",
+    y = "Sample Size"
+  ) +
+  scale_x_continuous(
+    breaks = seq(min(uk_data$Year), max(uk_data$Year), by = 1) 
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
