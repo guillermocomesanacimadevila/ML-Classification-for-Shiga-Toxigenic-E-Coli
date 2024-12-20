@@ -5,9 +5,11 @@ install.packages("readr")
 install.packages("dyplr")
 install.packages("pheatmap")
 install.packages("tidyr")
+install.packages("reshape2")
 
 library(ggplot2)
 library(pheatmap)
+library(reshape2)
 library(readr)
 library(dplyr)
 library(tidyr)
@@ -258,3 +260,21 @@ ggplot(data = region_wide_df, aes(x = as.factor(Year), y = Frequency, fill = Reg
     axis.text.x = element_text(angle = 45, hjust = 1),
     plot.title = element_text(hjust = 0.5, size = 16, face = "bold")
   )
+
+# ========= Normalisation ========= #
+stx_pt_table <- table(correct_filtered_table$Stx, correct_filtered_table$PT)
+stx_pt_alignment <- prop.table(stx_pt_table, margin = 1)
+write.csv(stx_pt_alignment, "/Users/guillermocomesanacimadevila/Desktop/normalisation.csv", row.names = TRUE)
+normalisation_data <- read.csv("/Users/guillermocomesanacimadevila/Desktop/normalisation.csv", row.names = 1)
+
+heatmap_matrix <- as.matrix(normalisation_data)
+pheatmap(
+  heatmap_matrix,
+  color = colorRampPalette(c("steelblue", "white", "tomato1"))(50), 
+  cluster_rows = TRUE,   
+  cluster_cols = TRUE,   
+  fontsize = 12,         
+  fontsize_row = 10,     
+  fontsize_col = 10,     
+  main = "Clustered Heatmap of Stx and PT" 
+)
