@@ -190,7 +190,7 @@ uk_data <- uk_samples %>%
 ggplot(data = uk_data, aes(x = Year, y = Freq)) +
   geom_bar(stat = "identity", position = position_dodge(), fill = "steelblue", color = "black") +
   geom_point(color = "black", size = 3, shape = 15) +
-  geom_smooth(method = "loess", se = FALSE, color = "orange", size = 1.2, linetype = "dashed") +
+  geom_line(method = "loess", se = FALSE, color = "orange", size = 1.2, linetype = "dashed") +
   geom_text(aes(label = ""), vjust = -0.3, color = "black", size = 2.5) +
   theme_minimal() +
   labs(
@@ -202,3 +202,59 @@ ggplot(data = uk_data, aes(x = Year, y = Freq)) +
     breaks = seq(min(uk_data$Year), max(uk_data$Year), by = 1) 
   ) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# ======== Multi-regional bar chart ======== #
+# Stacked up bar chart
+# Sample evolution over time for all regions in one bar chart and each with their independnt tendency line
+region_samples <- read.csv("/Users/guillermocomesanacimadevila/Desktop/(MSc) BIOINFORMATICS/APPLIED DATA SCIENCE IN BIOLOGY/Coursework/Applied Data Science CW 1 (Script)/Scripts/Final analysis/regional_sorted_samples.csv", header = TRUE)
+region_wide_df <- region_samples %>%
+  group_by(Year, Region) %>%
+  summarise(Frequency = n(), .groups = "drop")
+
+ggplot(data = region_wide_df, aes(x = as.factor(Year), y = Frequency, fill = Region)) +
+  geom_bar(stat = "identity") + 
+  geom_line(aes(x = as.factor(Year), y = Frequency, group = Region, color = Region), size = 1) +  
+  geom_point(aes(x = as.factor(Year), y = Frequency), color = "black", size = 1.5, shape = 15, inherit.aes = FALSE) +  
+  labs(
+    title = "Regional Counts Over Time",
+    x = "Year",
+    y = "Frequency",
+    fill = "Region"
+  ) +
+  scale_fill_manual(
+    values = c(
+      "M. East" = "red", 
+      "N. America" = "blue", 
+      "S. Europe" = "green", 
+      "C. America" = "yellow",
+      "C. Europe" = "skyblue",
+      "S. America" = "grey30",
+      "Subsaharan Africa" = "orange", 
+      "UK" = "purple",
+      "Asia" = "pink",
+      "Australasia" = "steelblue",
+      "N. Africa" = "springgreen",
+      "N. Europe" = "sienna2"
+    )  
+  ) +
+  scale_color_manual(
+    values = c(
+      "M. East" = "black", 
+      "N. America" = "black", 
+      "S. Europe" = "black", 
+      "C. America" = "black",
+      "C. Europe" = "black",
+      "S. America" = "black",
+      "Subsaharan Africa" = "black", 
+      "UK" = "black",
+      "Asia" = "black",
+      "Australasia" = "black",
+      "N. Africa" = "black",
+      "N. Europe" = "black"
+    )  
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    plot.title = element_text(hjust = 0.5, size = 16, face = "bold")
+  )
