@@ -278,3 +278,63 @@ pheatmap(
   fontsize_col = 10,     
   main = "Clustered Heatmap of Stx and PT" 
 )
+
+# ========= Log-normalised heatmap ========= #
+data <- read.csv("/Users/guillermocomesanacimadevila/Desktop/(MSc) BIOINFORMATICS/APPLIED DATA SCIENCE IN BIOLOGY/Coursework/Applied Data Science CW 1 (Script)/Scripts/Final analysis/log_normalised.csv", header = TRUE)
+
+log_columns <- grep("log", names(data), value = TRUE)
+heatmap_4_data <- data %>%
+  pivot_longer(cols = all_of(log_columns), names_to = "Log_Stx", values_to = "Log_Value") %>%
+  group_by(Log_Stx, PT) %>%
+  summarise(Mean_Log_Value = mean(Log_Value, na.rm = TRUE), .groups = "drop") %>%
+  arrange(desc(Mean_Log_Value))
+
+pt_priority <- heatmap_4_data %>%
+  group_by(PT) %>%
+  summarise(Total_Log_Value = sum(Mean_Log_Value, na.rm = TRUE), .groups = "drop") %>%
+  arrange(desc(Total_Log_Value))
+
+heatmap_matrix <- heatmap_4_data %>%
+  pivot_wider(names_from = PT, values_from = Mean_Log_Value, values_fill = list(Mean_Log_Value = 0)) %>%
+  column_to_rownames(var = "Log_Stx")
+
+heatmap_matrix <- heatmap_matrix[, pt_priority$PT]
+
+pheatmap(
+  heatmap_matrix,
+  color = colorRampPalette(c("steelblue", "white", "tomato1"))(50),
+  cluster_rows = TRUE,
+  cluster_cols = TRUE,
+  fontsize = 12,
+  fontsize_row = 10,
+  fontsize_col = 10,
+  main = "Clustered Heatmap of PT and Log-Transformed Stx Columns"
+)
+
+# Maybe we could weigh the most virulent ones against the less virulent Stx
+
+# ========= Log-normalised count per region ========= #
+write_csv(region_wide_df, "/Users/guillermocomesanacimadevila/Desktop/(MSc) BIOINFORMATICS/APPLIED DATA SCIENCE IN BIOLOGY/Coursework/Applied Data Science CW 1 (Script)/Scripts/Final analysis/region_year_counter.csv")
+year_region_df <- read.csv("/Users/guillermocomesanacimadevila/Desktop/(MSc) BIOINFORMATICS/APPLIED DATA SCIENCE IN BIOLOGY/Coursework/Applied Data Science CW 1 (Script)/Scripts/Final analysis/region_year_counter.csv", header = TRUE)
+
+year_region_df <- year_region_df %>%
+  group_by(Year) %>%
+  mutate(
+    Normalized_Frequency = Frequency / sum(Frequency),
+    Log2_Normalized_Frequency = log2(Normalized_Frequency + 1e-9) 
+  ) %>%
+  ungroup()
+write.csv(year_region_df, "/Users/guillermocomesanacimadevila/Desktop/(MSc) BIOINFORMATICS/APPLIED DATA SCIENCE IN BIOLOGY/Coursework/Applied Data Science CW 1 (Script)/Scripts/Final analysis/region_year_counter_with_log2.csv", row.names = FALSE)
+
+# Bar chart
+ggplot(year_region_df, aes(x = factor(Year), y = Frequency, fill = Region)) +
+  geom_bar(stat = "identity") + 
+  scale_fill_brewer(palette = "Set3") + 
+  labs(
+    title = "Regional Frequency Over the Years",
+    x = "Year",
+    y = "-log10 (Frequency)", 
+    fill = "Region"
+  ) +
+  theme_minimal() +  
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
