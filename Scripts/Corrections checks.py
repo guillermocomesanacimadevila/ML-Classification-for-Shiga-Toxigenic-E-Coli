@@ -76,3 +76,24 @@ if "Year" in metadata.columns:
     print("Unique values in 'Year':", unique_values_year)
 else:
     print("The 'Year' column is not in the data frame.")
+
+
+# Now create a pd df and add 5 new columns ranging from 0-1 depends on stx
+# log normalise the ting
+metadata_norm = format_file("~/Desktop/(MSc) BIOINFORMATICS/APPLIED DATA SCIENCE IN BIOLOGY/Coursework/Applied Data Science CW 1 (Script)/Scripts/Final analysis/Filtered_metadata.csv")
+stx_types = ["stx1a", "stx2a", "stx2c", "stx2d", "stx1c"]
+for stx_type in stx_types:
+    metadata_norm[stx_type] = [1 if stx_type in value else 0 for value in metadata_norm["Stx"]]
+print(metadata_norm[[col for col in metadata_norm.columns if col.startswith("stx")]].head())
+#print(metadata_norm["Stx"].unique())
+# log base e normalisation (loge(x)) (np.loge(x))
+
+for stx_type in stx_types:
+    metadata_norm[f'{stx_type}_log'] = np.log1p(metadata_norm[stx_type])
+print(metadata_norm)
+
+otput_location = "~/Desktop/(MSc) BIOINFORMATICS/APPLIED DATA SCIENCE IN BIOLOGY/Coursework/Applied Data Science CW 1 (Script)/Scripts/Final analysis/log_normalised.csv"
+# Save to new csv
+metadata_norm.to_csv(otput_location, index=False)
+new_file = format_file(otput_location)
+print(new_file[[col for col in new_file.columns if col.startswith("log")]].head())
