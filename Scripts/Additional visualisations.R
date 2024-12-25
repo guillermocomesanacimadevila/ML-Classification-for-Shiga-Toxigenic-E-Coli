@@ -6,6 +6,7 @@ install.packages("dyplr")
 install.packages("pheatmap")
 install.packages("tidyr")
 install.packages("reshape2")
+install.packages("tibble")
 
 library(ggplot2)
 library(pheatmap)
@@ -13,6 +14,7 @@ library(reshape2)
 library(readr)
 library(dplyr)
 library(tidyr)
+library(tibble)
 
 metadata <- read.csv("/Users/guillermocomesanacimadevila/Desktop/(MSc) BIOINFORMATICS/APPLIED DATA SCIENCE IN BIOLOGY/Coursework/Applied Data Science CW 1 (Script)/Scripts/Final analysis/Filtered_metadata.csv", header = TRUE)
 counter_region <- read.csv("/Users/guillermocomesanacimadevila/Desktop/(MSc) BIOINFORMATICS/APPLIED DATA SCIENCE IN BIOLOGY/Coursework/Applied Data Science CW 1 (Script)/Scripts/Final analysis/region_specific.csv", header = TRUE)
@@ -57,3 +59,36 @@ ggplot(filtered_data, aes(x = Year, y = Normalized_Count, color = Region)) +
     legend.text = element_text(size = 10),
     plot.title = element_text(hjust = 0.5, size = 16)
   )
+
+# ====== Heatmap  ====== # 
+standard_metadata <- read.csv("/Users/guillermocomesanacimadevila/Desktop/(MSc) BIOINFORMATICS/APPLIED DATA SCIENCE IN BIOLOGY/Coursework/Applied Data Science CW 1 (Script)/Scripts/Final analysis/XX50235metadata", header = TRUE)
+heatmap_dat <- standard_metadata %>%
+  group_by(Stx, PT) %>%
+  summarise(Count = n(), .groups = "drop") %>%
+  arrange(desc(Count))
+
+heatmap_dat <- heatmap_dat %>%
+  mutate(PT = ifelse(PT == "", "<Empty>", PT))  
+
+hm_priority <- heatmap_dat %>%
+  group_by(PT) %>%
+  summarise(total_count = sum(Count), .groups = "drop") %>%
+  arrange(desc(total_count))
+
+hm_matrix <- heatmap_dat %>%
+  pivot_wider(names_from = PT, values_from = Count, values_fill = list(Count = 0)) %>%
+  column_to_rownames(var = "Stx")
+
+hm_matrix <- hm_matrix[, hm_priority$PT]
+
+pheatmap(
+  hm_matrix,
+  color = colorRampPalette(c("steelblue", "white", "gold2"))(50),
+  cluster_rows = TRUE,
+  cluster_cols = TRUE,
+  fontsize = 12,
+  fontsize_row = 10,
+  fontsize_col = 10,
+  main = "Clustered Heatmap of Stx and PT (Including <Empty>)",
+  display_numbers = FALSE
+)
