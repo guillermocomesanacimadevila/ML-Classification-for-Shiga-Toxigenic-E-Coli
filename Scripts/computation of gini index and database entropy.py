@@ -39,7 +39,7 @@ gi_pt = gini_index(pt_value_dict.values())
 print(stx_value_dict) # Correct for this one
 # print(region_value_dict, country_value_dict, stx_value_dict, pt_value_dict)
 # Entropy (rate of disorder)
-# H(x) = Sigma[p(x) . log2p(x)] - High H(x) = greater randomness
+# H(x) = Sigma[p(x) . -log2p(x)] - High H(x) = greater randomness
 
 entropy_region = sum(entropy_coef([val / sum(region_value_dict.values()) for val in region_value_dict.values()]))
 entropy_country = sum(entropy_coef([val / sum(country_value_dict.values()) for val in country_value_dict.values()]))
