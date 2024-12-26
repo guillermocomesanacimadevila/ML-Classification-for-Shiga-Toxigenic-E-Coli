@@ -48,3 +48,8 @@ entropy_pt = sum(entropy_coef([val / sum(pt_value_dict.values()) for val in pt_v
 
 print(f"Gini index for all required classes: {gi_regions, gi_country, gi_stx, gi_pt}")
 print(f"Entropy coefficient per class: {entropy_region, entropy_country, entropy_stx, entropy_pt}")
+
+print(metadata["Stx"].unique())
+print((len([val for val in metadata["Region"] if val == "UK"]) / len(metadata["Region"])) * 100)
+print((len([val for val in metadata["Country"] if val == "N"]) / len(metadata["Country"])) * 100)
+print([sorted((str(key), str(val))) for key, val in pt_value_dict.items()] [::-1])
