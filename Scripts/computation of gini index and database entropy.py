@@ -1,8 +1,8 @@
 # ======== Call libraries ======== #
 
 import os
-import numpy as np
 import pandas as pd
+import numpy as np
 
 # ======== Function accumulator ======== #
 
@@ -22,6 +22,9 @@ def entropy_coef(values):
     total_entropy = p * p_log
     return total_entropy
 
+def imbalance_ratio(values):
+    return max(values.value_counts()) / min(values.value_counts())
+
 # ======== Outputs ======== #
 # Gini index
 metadata = read_file("~/Desktop/(MSc) BIOINFORMATICS/APPLIED DATA SCIENCE IN BIOLOGY/Coursework/Applied Data Science CW 1 (Script)/Scripts/Final analysis/XX50235metadata")
@@ -39,7 +42,7 @@ gi_pt = gini_index(pt_value_dict.values())
 print(stx_value_dict) # Correct for this one
 # print(region_value_dict, country_value_dict, stx_value_dict, pt_value_dict)
 # Entropy (rate of disorder)
-# H(x) = Sigma[p(x) . -log2p(x)] - High H(x) = greater randomness
+# H(x) = Sigma[p(x) . log2p(x)] - High H(x) = greater randomness
 
 entropy_region = sum(entropy_coef([val / sum(region_value_dict.values()) for val in region_value_dict.values()]))
 entropy_country = sum(entropy_coef([val / sum(country_value_dict.values()) for val in country_value_dict.values()]))
@@ -53,3 +56,11 @@ print(metadata["Stx"].unique())
 print((len([val for val in metadata["Region"] if val == "UK"]) / len(metadata["Region"])) * 100)
 print((len([val for val in metadata["Country"] if val == "N"]) / len(metadata["Country"])) * 100)
 print([sorted((str(key), str(val))) for key, val in pt_value_dict.items()] [::-1])
+print(sum(pt_value_dict.values()) - len(metadata["PT"])) # N/A vals
+
+# Imbalance ratios
+region_imb = imbalance_ratio(metadata["Region"])
+country_imb = imbalance_ratio(metadata["Country"])
+stx_imb = imbalance_ratio(metadata["Stx"])
+pt_imb = imbalance_ratio(metadata["PT"])
+print(f"Imbalance ratios: {region_imb, country_imb, stx_imb, pt_imb}")
