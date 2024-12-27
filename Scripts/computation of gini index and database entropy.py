@@ -64,3 +64,6 @@ country_imb = imbalance_ratio(metadata["Country"])
 stx_imb = imbalance_ratio(metadata["Stx"])
 pt_imb = imbalance_ratio(metadata["PT"])
 print(f"Imbalance ratios: {region_imb, country_imb, stx_imb, pt_imb}")
+
+print(f"The region with the minimum count is: {metadata['Region'].value_counts().idxmin()} with count {metadata['Region'].value_counts().min()}")
+print(f"The country with the minimum count is: {metadata['Country'].value_counts().idxmin()} with count {metadata['Country'].value_counts().min()}")
