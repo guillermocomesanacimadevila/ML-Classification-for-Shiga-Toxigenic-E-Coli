@@ -68,5 +68,4 @@ print(f"Imbalance ratios: {region_imb, country_imb, stx_imb, pt_imb}")
 print(f"The region with the minimum count is: {metadata['Region'].value_counts().idxmin()} with count {metadata['Region'].value_counts().min()}")
 print(f"The country with the minimum count is: {metadata['Country'].value_counts().idxmin()} with count {metadata['Country'].value_counts().min()}")
 print(f"Number of PTs with a single sample entry: {len([val for val in metadata["PT"].value_counts() if val == float(1)])}")
-
 print(f"Log normalised entropy per class:{entropy_region / np.log2(len(metadata["Region"].value_counts())), entropy_country / np.log2(len(metadata["Country"].value_counts())), entropy_stx / np.log2(len(metadata["Stx"].value_counts())), entropy_pt / np.log2(len(metadata["PT"].value_counts()))}")
