@@ -67,4 +67,4 @@ print(f"Imbalance ratios: {region_imb, country_imb, stx_imb, pt_imb}")
 
 print(f"The region with the minimum count is: {metadata['Region'].value_counts().idxmin()} with count {metadata['Region'].value_counts().min()}")
 print(f"The country with the minimum count is: {metadata['Country'].value_counts().idxmin()} with count {metadata['Country'].value_counts().min()}")
-print(f"Number of PTs with a single sample entry: {len([val for val in metadata["PT"].value_counts() if val == 1])}")
+print(f"Number of PTs with a single sample entry: {len([val for val in metadata["PT"].value_counts() if val == float(1)])}")
