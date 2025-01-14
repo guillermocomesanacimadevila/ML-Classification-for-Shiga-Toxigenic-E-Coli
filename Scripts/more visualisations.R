@@ -30,89 +30,88 @@ dim(pt_counters)
 country_counters <- country_counters %>%
   mutate(Country = ifelse(Country == "N", "UK", Country))
 
-# Group small samples into "Other"
-group_small_samples <- function(data, category_col, count_col) {
+# Function to group categories with counts below a threshold into 'Other'
+group_small_samples <- function(data, category_col, count_col, threshold = 30) {
   data %>%
-    mutate(!!sym(category_col) := ifelse(!!sym(count_col) < 30, "Other", !!sym(category_col))) %>%
+    mutate(!!sym(category_col) := ifelse(!!sym(count_col) < threshold, "Other", !!sym(category_col))) %>%
     group_by(!!sym(category_col)) %>%
-    summarize(!!sym(count_col) := sum(!!sym(count_col))) %>%
+    summarize(!!sym(count_col) := sum(!!sym(count_col), na.rm = TRUE)) %>%
     ungroup()
 }
 
+# Function to reorder factor levels with 'Other' at the end and sort by count
 reorder_with_other_last <- function(data, category_col, count_col) {
-  # Order by count in descending order
-  ordered_levels <- data %>%
+  data <- data %>%
     arrange(desc(!!sym(count_col))) %>%
-    pull(!!sym(category_col))
-  
-  # Ensure "Other" is the last level
-  ordered_levels <- c(setdiff(ordered_levels, "Other"), "Other")
-  
-  # Update the factor levels
-  data %>%
-    mutate(!!sym(category_col) := factor(!!sym(category_col), levels = ordered_levels))
+    mutate(!!sym(category_col) := factor(!!sym(category_col), levels = c(setdiff(unique(!!sym(category_col)), "Other"), "Other")))
+  return(data)
 }
 
-# Apply transformations to datasets
-region_counters <- group_small_samples(region_counters, "Region", "Region_Count") %>%
+# Apply transformations
+region_counters <- region_counters %>%
+  group_small_samples("Region", "Region_Count") %>%
   reorder_with_other_last("Region", "Region_Count")
 
-country_counters <- group_small_samples(country_counters, "Country", "Country_Count") %>%
+country_counters <- country_counters %>%
+  mutate(Country = ifelse(Country == "N", "UK", Country)) %>%
+  group_small_samples("Country", "Country_Count") %>%
   reorder_with_other_last("Country", "Country_Count")
 
-stx_counters <- group_small_samples(stx_counters, "Stx", "Stx_Count") %>%
+stx_counters <- stx_counters %>%
+  group_small_samples("Stx", "Stx_Count") %>%
   reorder_with_other_last("Stx", "Stx_Count")
 
-pt_counters <- group_small_samples(pt_counters, "PT", "PT_Count") %>%
+pt_counters <- pt_counters %>%
+  group_small_samples("PT", "PT_Count") %>%
   reorder_with_other_last("PT", "PT_Count")
 
 # ======== Custom Theme ======== #
-custom_theme <- theme_minimal(base_size = 12) + 
+custom_theme <- theme_minimal(base_size = 14) + 
   theme(
-    plot.title = element_text(hjust = 0.5, size = 14, face = "bold"), 
-    axis.text.x = element_text(angle = 45, hjust = 1),                
-    axis.title = element_text(size = 12),                            
-    legend.position = "bottom",                                       
-    legend.title = element_text(size = 12),                           
-    legend.text = element_text(size = 10)                             
+    plot.title = element_text(hjust = 0.5, size = 16, face = "bold"),
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 12),
+    axis.text.y = element_text(size = 12),
+    axis.title = element_text(size = 14),
+    legend.position = "none",
+    panel.grid.major = element_line(color = "grey90"),
+    panel.grid.minor = element_blank()
   )
 
 # ======== Create Bar Charts ======== #
 # Region Bar-chart
 p1 <- ggplot(region_counters, aes(x = Region, y = Region_Count, fill = Region_Count)) +
-  geom_bar(stat = "identity", position = position_dodge(), color = "lightblue", fill = "steelblue") +
-  labs(title = "Region-wide Sample Distribution", x = "Region", y = "Samples") +
-  removeGrid(x = FALSE, y = FALSE) +
+  geom_bar(stat = "identity", color = "black") +
+  labs(title = "Region-wide Sample Distribution", x = "Region", y = "Sample Count") +
+  scale_fill_gradient(low = "lightblue", high = "steelblue") +
   custom_theme
 
 # Country Bar-chart
 p2 <- ggplot(country_counters, aes(x = Country, y = Country_Count, fill = Country_Count)) +
-  geom_bar(stat = "identity", position = position_dodge(), color = "lightblue", fill = "steelblue") +
-  labs(title = "Country-wide Sample Distribution", x = "Country", y = "Samples") +
-  removeGrid(x = FALSE, y = FALSE) +
+  geom_bar(stat = "identity", color = "black") +
+  labs(title = "Country-wide Sample Distribution", x = "Country", y = "Sample Count") +
+  scale_fill_gradient(low = "lightblue", high = "steelblue") +
   custom_theme
 
 # Stx Bar-chart
 p3 <- ggplot(stx_counters, aes(x = Stx, y = Stx_Count, fill = Stx_Count)) +
-  geom_bar(stat = "identity", position = position_dodge(), color = "lightblue", fill = "steelblue") +
-  labs(title = "Stx-wide Sample Distribution", x = "Stx", y = "Samples") +
-  removeGrid(x = FALSE, y = FALSE) +
+  geom_bar(stat = "identity", color = "black") +
+  labs(title = "Stx-wide Sample Distribution", x = "Stx Type", y = "Sample Count") +
+  scale_fill_gradient(low = "lightblue", high = "steelblue") +
   custom_theme
 
 # PT Bar-chart  
 p4 <- ggplot(pt_counters, aes(x = PT, y = PT_Count, fill = PT_Count)) +
-  geom_bar(stat = "identity", position = position_dodge(), color = "lightblue", fill = "steelblue") +
-  labs(title = "PT-wide Sample Distribution", x = "PT", y = "Samples") +
-  removeGrid(x = FALSE, y = FALSE) +
+  geom_bar(stat = "identity", color = "black") +
+  labs(title = "PT-wide Sample Distribution", x = "PT Type", y = "Sample Count") +
+  scale_fill_gradient(low = "lightblue", high = "steelblue") +
   custom_theme
 
 # ======== Multi-paneled Figure ======== #
 multi_paneled_figure <- ggarrange(
   p1, p2, p3, p4,
-  labels = c("Plot 1", "Plot 2", "Plot 3", "Plot 4"),
+  labels = c("A", "B", "C", "D"),
   ncol = 2, nrow = 2,
-  common.legend = TRUE,
-  legend = "bottom"
+  common.legend = FALSE
 )
 
 # Display figure
