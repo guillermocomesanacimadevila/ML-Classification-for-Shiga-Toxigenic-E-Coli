@@ -21,10 +21,6 @@ stx_counters <- read.csv("cleaned _stx.csv", header = TRUE)
 pt_counters <- read.csv("cleaned_pt.csv", header = TRUE)
 
 dim(metadata_cleaned)
-dim(region_counters)
-dim(country_counters)
-dim(stx_counters)
-dim(pt_counters)
 
 # Update "N" in Country to "UK"
 country_counters <- country_counters %>%
