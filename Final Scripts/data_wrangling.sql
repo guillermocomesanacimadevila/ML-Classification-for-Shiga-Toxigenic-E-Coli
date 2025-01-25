@@ -141,10 +141,20 @@ WHERE Stx <> '-'
 GROUP BY Country
 ORDER BY Country_Count DESC;
 
-SELECT Stx, Count(*) AS Stx_Count
+-- Temporal trends data
+
+SELECT Region, Year, COUNT(*) AS Sample_Size
 FROM metadata_f
 WHERE Stx <> '-' 
+  AND Stx <> 'NA' 
   AND PT NOT IN ('untypable', '#N/A', 'NA')
-  AND Stx <> 'NA'
-GROUP BY Stx
-ORDER BY Stx_Count DESC;
+GROUP BY Region, Year
+ORDER BY Year, Sample_Size DESC;
+
+SELECT Country, Year, COUNT(*) AS Sample_Size
+FROM metadata_f
+WHERE Stx <> '-' 
+  AND Stx <> 'NA' 
+  AND PT NOT IN ('untypable', '#N/A', 'NA')
+GROUP BY Country, Year
+ORDER BY Year, Sample_Size DESC;
