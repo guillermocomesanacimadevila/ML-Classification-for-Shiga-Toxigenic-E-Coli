@@ -168,3 +168,11 @@ WHERE Stx <> '-'
   AND Stx <> 'NA'
 GROUP BY Stx
 ORDER BY Stx_Count DESC;
+
+-- EXTRACT NEW FINAL DATASET
+
+SELECT *
+FROM metadata_f
+WHERE Stx <> '-' 
+  AND PT NOT IN ('untypable', '#N/A', 'NA')
+  AND Stx <> 'NA';
