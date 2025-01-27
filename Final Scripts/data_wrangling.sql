@@ -193,16 +193,26 @@ ORDER BY Stx_Count, PT_Count DESC;
 
 -- separate UK samples from Non
 
-SELECT * 
+SELECT 
+    Stx,
+    COUNT(*) AS Stx_Count,
+    PT,
+    COUNT(*) AS PT_Count
 FROM metadata_f
 WHERE Region = "UK"
   AND Stx <> '-' 
   AND PT NOT IN ('untypable', '#N/A', 'NA')
-  AND Stx <> 'NA';
+  AND Stx <> 'NA'
+GROUP BY Stx, PT;
   
-SELECT * 
+SELECT 
+    Stx,
+    COUNT(*) AS Stx_Count,
+    PT,
+    COUNT(*) AS PT_Count
 FROM metadata_f
 WHERE Region != "UK"
   AND Stx <> '-' 
   AND PT NOT IN ('untypable', '#N/A', 'NA')
-  AND Stx <> 'NA';
+  AND Stx <> 'NA'
+GROUP BY Stx, PT;
