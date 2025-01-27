@@ -49,6 +49,8 @@ UPDATE metadata_f SET Country = 'N' WHERE Country = 'Wales';
 UPDATE metadata_f SET Country = 'UK' WHERE Country = 'N';
 UPDATE metadata_f SET Stx = 'stx1a stx2a stx2c' WHERE Stx = 'stx2a stx2c stx1a';
 UPDATE metadata_f SET Stx = 'stx2c stx1a' WHERE Stx = 'stx1a stx2c';
+UPDATE metadata_f SET Stx = 'stx2a stx1a' WHERE Stx = 'stx1a stx2a';
+
 SET SQL_SAFE_UPDATES = 1;
 
 SELECT COUNT(*) FROM metadata_f
@@ -158,3 +160,11 @@ WHERE Stx <> '-'
   AND PT NOT IN ('untypable', '#N/A', 'NA')
 GROUP BY Country, Year
 ORDER BY Year, Sample_Size DESC;
+
+SELECT Stx, Count(*) AS Stx_Count
+FROM metadata_f
+WHERE Stx <> '-' 
+  AND PT NOT IN ('untypable', '#N/A', 'NA')
+  AND Stx <> 'NA'
+GROUP BY Stx
+ORDER BY Stx_Count DESC;
