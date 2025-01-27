@@ -176,3 +176,17 @@ FROM metadata_f
 WHERE Stx <> '-' 
   AND PT NOT IN ('untypable', '#N/A', 'NA')
   AND Stx <> 'NA';
+  
+  -- Extract Stx and PT counts
+  
+SELECT 
+	Stx, 
+    COUNT(Stx) AS Stx_Count, 
+    PT, 
+    COUNT(PT) AS PT_Count
+FROM metadata_f
+WHERE Stx <> '-' 
+  AND PT NOT IN ('untypable', '#N/A', 'NA')
+  AND Stx <> 'NA'
+GROUP BY Stx, PT
+ORDER BY Stx_Count, PT_Count DESC;
