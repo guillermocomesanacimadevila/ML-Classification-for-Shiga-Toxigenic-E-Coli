@@ -190,3 +190,19 @@ WHERE Stx <> '-'
   AND Stx <> 'NA'
 GROUP BY Stx, PT
 ORDER BY Stx_Count, PT_Count DESC;
+
+-- separate UK samples from Non
+
+SELECT * 
+FROM metadata_f
+WHERE Region = "UK"
+  AND Stx <> '-' 
+  AND PT NOT IN ('untypable', '#N/A', 'NA')
+  AND Stx <> 'NA';
+  
+SELECT * 
+FROM metadata_f
+WHERE Region != "UK"
+  AND Stx <> '-' 
+  AND PT NOT IN ('untypable', '#N/A', 'NA')
+  AND Stx <> 'NA';
