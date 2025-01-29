@@ -28,8 +28,8 @@ def imbalance_ratio(values):
 # ======== Outputs ======== #
 # Gini index
 metadata = read_file("~/Desktop/(MSc) BIOINFORMATICS/APPLIED DATA SCIENCE IN BIOLOGY/Coursework/Applied Data Science CW 1 (Script)/Scripts/Final analysis/XX50235metadata")
-region_value_dict = metadata['Region'].value_counts().to_dict()
-country_value_dict = metadata['Country'].value_counts().to_dict()
+region_value_dict = metadata["Region"].value_counts().to_dict()
+country_value_dict = metadata["Country"].value_counts().to_dict()
 stx_value_dict = metadata["Stx"].value_counts().to_dict()
 pt_value_dict = metadata["PT"].value_counts().to_dict()
 
@@ -65,8 +65,8 @@ stx_imb = imbalance_ratio(metadata["Stx"])
 pt_imb = imbalance_ratio(metadata["PT"])
 print(f"Imbalance ratios: {region_imb, country_imb, stx_imb, pt_imb}")
 
-print(f"The region with the minimum count is: {metadata['Region'].value_counts().idxmin()} with count {metadata['Region'].value_counts().min()}")
-print(f"The country with the minimum count is: {metadata['Country'].value_counts().idxmin()} with count {metadata['Country'].value_counts().min()}")
+print(f"The region with the minimum count is: {metadata["Region"].value_counts().idxmin()} with count {metadata["Region"].value_counts().min()}")
+print(f"The country with the minimum count is: {metadata["Country"].value_counts().idxmin()} with count {metadata["Country"].value_counts().min()}")
 print(f"Number of PTs with a single sample entry: {len([val for val in metadata["PT"].value_counts() if val == float(1)])}")
 print(f"Log normalised entropy per class:{entropy_region / np.log2(len(metadata["Region"].value_counts())), entropy_country / np.log2(len(metadata["Country"].value_counts())), entropy_stx / np.log2(len(metadata["Stx"].value_counts())), entropy_pt / np.log2(len(metadata["PT"].value_counts()))}")
 print(sorted(metadata["Country"].value_counts()) [::-1])
