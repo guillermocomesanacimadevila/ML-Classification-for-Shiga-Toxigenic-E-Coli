@@ -1,0 +1,102 @@
+Stx,Stx_Count,PT,PT_Count
+stx2a,1,"PT 70",1
+stx1a,1,"PT 1",1
+stx2c,1,"PT 42",1
+stx2c,1,"PT 87",1
+"stx2c stx1a",1,"PT 2",1
+stx2c,1,"PT 38",1
+stx2a,1,"PT 24",1
+"stx2c stx1a",1,"PT 21/28",1
+"stx2a stx2c",1,"PT 42",1
+stx2a,1,"PT 88",1
+stx2c,1,"PT 33",1
+stx2a,1,"PT 23",1
+stx2c,1,"PT 91",1
+stx2c,1,"PT 56",1
+stx2a,1,"PT 67",1
+stx2a,1,"PT 42",1
+"stx2a stx1a",1,"PT 23",1
+stx2c,1,"PT 88",1
+"stx1a stx2a stx2c",1,"PT 10",1
+"stx2a stx2c",1,"PT 10",1
+"stx1a stx2a stx2c",1,"PT 43",1
+"stx2a stx1a",1,"PT 4",1
+stx1a,1,RDNC,1
+stx2c,1,"PT 45",1
+stx1a,1,"PT 34",1
+"stx1a stx1c stx2c",1,"PT 8",1
+"stx1a stx2c stx2d",1,"PT 8",1
+stx1a,1,"PT 32",1
+"stx2a stx2c",1,"PT 46",1
+"stx1a stx2a stx2c",1,RDNC,1
+stx2c,1,"PT 89",1
+"stx2c stx1a",1,"PT 23",1
+stx2c,2,"PT 90",2
+"stx2c stx1a",2,"PT 33",2
+stx1a,2,"PT 54",2
+"stx2c stx1a",2,"PT 67",2
+stx2a,3,"PT 33",3
+stx2a,3,"PT 56",3
+stx2c,3,"PT 2",3
+"stx2a stx2c",3,"PT 74",3
+"stx2a stx2c",3,"PT 33",3
+"stx2c stx1a",3,"PT 32",3
+"stx2a stx2c",3,"PT 8",3
+stx2c,3,"PT 74",3
+stx2c,3,"PT 63",3
+"stx2a stx2c",3,"PT 70",3
+"stx1a stx2a stx2c",3,"PT 1",3
+"stx2a stx2c",4,"PT 51",4
+"stx2a stx2c",4,"PT 87",4
+"stx2a stx2c",4,"PT 1",4
+"stx2a stx1a",4,"PT 21/28",4
+"stx1a stx2a stx2c",4,"PT 54",4
+stx2a,5,"PT 54",5
+stx2a,5,"PT 51",5
+stx2a,5,"PT 34",5
+"stx2c stx1a",5,"PT 34",5
+"stx2a stx2c",6,"PT 24",6
+stx2a,7,"PT 4",7
+"stx2a stx1a",7,"PT 1",7
+"stx2a stx2c",7,"PT 14",7
+"stx2c stx1a",7,"PT 1",7
+"stx2a stx2c",7,RDNC,7
+"stx2a stx1a",7,"PT 14",7
+"stx2a stx1a",8,"PT 32",8
+stx2a,8,"PT 46",8
+stx2c,8,"PT 21/28",8
+stx1a,8,"PT 4",8
+stx2a,9,"PT 31",9
+"stx2c stx1a",9,"PT 31",9
+stx2a,10,RDNC,10
+stx2c,11,"PT 70",11
+stx2a,11,"PT 14",11
+"stx2c stx1a",11,"PT 4",11
+"stx2a stx2c",12,"PT 31",12
+stx1a,12,"PT 8",12
+"stx2c stx1a",13,RDNC,13
+"stx2a stx1a",16,"PT 8",16
+stx2c,18,"PT 1",18
+"stx2a stx2c",21,"PT 54",21
+"stx2c stx1a",22,"PT 14",22
+stx2c,22,"PT 31",22
+"stx2a stx2c",26,"PT 4",26
+stx2a,33,"PT 2",33
+stx2c,33,"PT 8",33
+"stx1a stx2a stx2c",45,"PT 8",45
+stx2c,45,RDNC,45
+"stx2a stx2c",50,"PT 32",50
+stx2c,50,"PT 32",50
+"stx2a stx2c",50,"PT 2",50
+stx2a,57,"PT 1",57
+stx2c,64,"PT 4",64
+stx2c,77,"PT 14",77
+"stx2c stx1a",80,"PT 54",80
+stx2a,86,"PT 32",86
+stx2c,96,"PT 34",96
+stx2c,107,"PT 54",107
+stx2a,169,"PT 21/28",169
+stx2a,170,"PT 8",170
+"stx2a stx2c",205,"PT 34",205
+"stx2a stx2c",260,"PT 21/28",260
+"stx2c stx1a",634,"PT 8",634
